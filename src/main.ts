@@ -9,11 +9,13 @@ async function bootstrap() {
       secret: 'my-secret',
       resave: true,
       saveUninitialized: false,
-      cookie: {
+      cookie:{
         maxAge: 30000
       }
     }),
   );
+  
+  
   await app.listen(3000);
 }
 bootstrap();
