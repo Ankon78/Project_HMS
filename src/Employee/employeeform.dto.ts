@@ -1,4 +1,4 @@
-import { IsEmail, IsInt, IsNotEmpty, IsPhoneNumber, IsString, IsStrongPassword, Length } from "class-validator";
+import { IsEmail, IsInt, IsNotEmpty, IsNumber, IsPhoneNumber, IsString, IsStrongPassword, Length, Matches, MaxLength, MinLength } from "class-validator";
 
 
 export class EmployeeForm {   
@@ -21,26 +21,35 @@ export class EmployeeLogin {
     name: string;
 
     @IsNotEmpty({message: "Please insert your password"})
-    @IsStrongPassword()
+    
     password: string;
 }
 
 export class EmployeeRegistration {
-    @IsNotEmpty({message: "Please insert your name"})
-    @Length(3,20)
+    @IsString()
+    @Length(5,20)
     name: string;
 
     @IsEmail()
     email: string;
 
-    @IsNotEmpty({message: "Please insert your password"})
+    
+    // @IsNotEmpty()
+    // @IsString()
+    // @MinLength(4)
+    // @MaxLength(20)
+    @Length(3,8)
+    password: string;
+
+    
     @IsPhoneNumber()
     phone: string;
 
-    @IsNotEmpty({message: "Please insert your password"})
+    @IsString()
     @Length(3,30)
-    @IsString({message: "Address here string type"})
     address: string;
+
+    filename: string;
 }
 
 export class EmployeeInsert {
@@ -55,13 +64,28 @@ export class EmployeeInsert {
 }
 
 export class UpdateEmployee {
-    @IsNotEmpty({message: "Id can not be empty"}) 
-    @IsInt()
-    id: number;
+    id:number;
 
-    @IsNotEmpty({message: "Please enter your name"})
-    @Length(3,8)
+    @IsString()
+    @Length(5,20)
     name: string;
+
+    @IsEmail()
+    email: string;
+
+    
+    @IsString()
+    password: string;
+
+    
+    @IsPhoneNumber()
+    phone: string;
+
+    @IsString()
+    @Length(3,30)
+    address: string;
+
+    filename: string;
 }
 
 export class DeleteEmployee {

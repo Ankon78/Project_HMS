@@ -12,12 +12,17 @@ export class EmployeeEntity{
    @Column()
    email: string;
 
+   @Column()
+   password: string;
+
   @Column()
   phone: string;
 
   @Column()
   address: string;
-
+  
+  @Column()
+  filename: string;
 
 
 

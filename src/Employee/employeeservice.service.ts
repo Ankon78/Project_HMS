@@ -3,64 +3,93 @@ import {InjectRepository} from '@nestjs/typeorm';
 import { EmployeeForm,EmployeeLogin,EmployeeRegistration,EmployeeInsert,UpdateEmployee,DeleteEmployee } from "./employeeform.dto";
 import { EmployeeEntity } from "./employeeentity.entity";
 import { Repository } from "typeorm";
+import * as bcrypt from 'bcrypt';
+import { MailerService } from "@nestjs-modules/mailer/dist";
 
 @Injectable()
 export class EmployeeService {
     constructor(
         @InjectRepository(EmployeeEntity)
-        private EmployeeRepo: Repository<EmployeeEntity>
+        private EmployeeRepo: Repository<EmployeeEntity>,
+        
+        private mailerService: MailerService
     ){}
 
-    getIndex():string {
-        return "Employee Index";
+    getIndex():any {
+        return this.EmployeeRepo.find();
     }
 
     getUserByID(id):any{
-        return "The id is "+id;
+        return this.EmployeeRepo.findOneBy({id});
     }
 
     getUserByName(qry):any {
     
-        return "the id is "+qry.id +" and name is "+qry.name;
+        return this.EmployeeRepo.findOneBy({ id:qry.id,name:qry.name });
     }
 
     getPatientList():any {
-        return "patient list";
-    }
-    
-    insertUser(mydto:EmployeeForm):any {
-        
-        return "Employee Inserted name: " + mydto.name+" and id is " + mydto.id;
+        return this.EmployeeRepo.find();
     }
 
-    loginEmployee(mydto:EmployeeLogin) :any {
-        return "name: "+mydto.name+ " password: " +mydto.password;
-    }
+
+    async signup(mydto) {
+        const salt = await bcrypt.genSalt();
+        const hassedpassed = await bcrypt.hash(mydto.password, salt);
+        mydto.password= hassedpassed;
+        return this.EmployeeRepo.save(mydto);
+        }
+        
+    async signin(mydto){
+            console.log(mydto.password);
+        const mydata= await this.EmployeeRepo.findOneBy({email: mydto.email});
+        const isMatch= await bcrypt.compare(mydto.password, mydata.password);
+        if(isMatch) {
+        return 1;
+        }
+        else {
+            return 0;
+        }
+        
+        }
+        
+    async sendEmail(mydata){
+         return   await this.mailerService.sendMail({
+                to: mydata.email,
+                subject: mydata.subject,
+                text: mydata.text, 
+              });
+        
+        }
     registrationEmp(mydto:EmployeeRegistration): any {
         const EmployeeRegistration = new EmployeeEntity()
         EmployeeRegistration.name = mydto.name;
+        EmployeeRegistration.password = mydto.password;
         EmployeeRegistration.email = mydto.email;
         EmployeeRegistration.phone = mydto.phone;
         EmployeeRegistration.address = mydto.address;
         return this.EmployeeRepo.save(EmployeeRegistration);
     }
 
-    insertEmployee(mydto:EmployeeInsert):any{
-        return "Employee name: "+mydto.name+ "and id is: "+mydto.id;
-    }
+    // addsalary(mydto:addsalary):any{
+    //     const EmployeeRegistration = new EmployeeEntity()
+    //     EmployeeRegistration.name = mydto.name;
+    //     EmployeeRegistration.password = mydto.password;
+    //     return this.addsalaryRepo.save(EmployeeRegistration);
+    // }
 
         
-    updateEmployee(mydto:UpdateEmployee):any {
-        return "Employee updated name: " +mydto.name+" and id is " +mydto.id;
+    updateEmployee(name,email):any {
+        return this.EmployeeRepo.update({name:name},{email:email});
     }
 
-    updateEmployeebyid(name,id):any {
-        return "Update Employee where id " +id+" and change name to " +name;
+    updateEmployeebyid(mydto:UpdateEmployee,id):any {
+        return this.EmployeeRepo.update(id,mydto);
     }
 
-    deleteEmployeebyid(mydto:DeleteEmployee):any {
+    deleteEmployeebyid(id):any {
 
-        return "Delete id is "+mydto.id;
+        return this.EmployeeRepo.delete(id);
     }
 
 }
