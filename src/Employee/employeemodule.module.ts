@@ -2,6 +2,8 @@ import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { EmployeeController } from "./employee.controller"
 import { EmployeeEntity } from "./employeeentity.entity";
+import { ScheduleEntity } from "./scheduleentity.entity";
+
 import { EmployeeService } from "./employeeservice.service"
 import { MailerModule } from "@nestjs-modules/mailer";
 

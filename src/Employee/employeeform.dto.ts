@@ -25,32 +25,33 @@ export class EmployeeLogin {
     password: string;
 }
 
-export class EmployeeRegistration {
-    @IsString()
-    @Length(5,20)
-    name: string;
+// export class EmployeeRegistration {
+//     @IsString()
+//     @Length(5,20)
+//     name: string;
 
-    @IsEmail()
-    email: string;
-
-    
-    // @IsNotEmpty()
-    // @IsString()
-    // @MinLength(4)
-    // @MaxLength(20)
-    @Length(3,8)
-    password: string;
+//     @IsEmail()
+//     email: string;
 
     
-    @IsPhoneNumber()
-    phone: string;
+//     @IsString()
+//     @MinLength(4)
+//     @MaxLength(20)
+//     @Matches(/((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {message: 'password will contain 1 upper case, 1 lower case and special character '})
+   
+//     password: string;
 
-    @IsString()
-    @Length(3,30)
-    address: string;
+    
+//     @IsPhoneNumber()
+//     phone: string;
 
-    filename: string;
-}
+//     @IsString()
+//     @Length(3,30)
+//     address: string;
+
+//     @IsNotEmpty()
+//     filename: string;
+// }
 
 export class EmployeeInsert {
     @IsNotEmpty({message: "Please enter your id"}) 

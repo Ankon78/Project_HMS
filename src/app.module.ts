@@ -7,10 +7,11 @@ import { EmployeeModule } from './Employee/employeemodule.module';
 import { PatientModule } from './Patient/patient.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AnalystModule } from './BuisnessAnalyst/Analyst.module';
+import { NurseModule } from './Nurse/nurse.module';
 
 
 @Module({
-  imports: [adminmodule,DoctorModule,EmployeeModule, AnalystModule,PatientModule, TypeOrmModule.forRoot(
+  imports: [adminmodule,DoctorModule,EmployeeModule, AnalystModule,PatientModule,NurseModule, TypeOrmModule.forRoot(
     {
       type: 'postgres',
       host: 'localhost',
